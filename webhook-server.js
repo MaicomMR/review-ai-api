@@ -54,7 +54,7 @@ app.post('/webhook', checkToken, async (req, res) => {
 
     const prNumber = req.body.pr_number;
     const repo = req.body.repo;
-    const owner = req.body.owner;
+    const commenter = req.body.commenter;
 
     console.log(`🚀 Revisando PR #${prNumber} do repositório ${repo}  | solicitante: ${commenter}`);
 
