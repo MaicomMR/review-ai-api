@@ -4,7 +4,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 async function callOllama(prompt, model = process.env.AIMODEL) {
-  const res = await axios.post('http://localhost:11434/api/generate', {
+  const res = await axios.post(process.env.AI_ENGINE_ENDPOINT, {
     model,
     prompt,
     stream: false
