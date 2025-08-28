@@ -25,14 +25,20 @@
 1. Clone o repositório: `git clone https://github.com/MaicomMR/review-ai-api.git`
 2. Após o clone, usar `npm i` para instalar as dependências do projeto
 3. Fazer uma cópia do .env.example e editar os campos:
-	a.  `GITHUB_TOKEN`: Token gerado na sua conta do github, será utilizado para puxar a Diff da PR
-	b. `API_TOKEN`: Qualquer token, garantirá que somente seu github irá utilizar a sua API
-	c. `AI_ENGINE_ENDPOINT`: Caso queira rodar o Ollama em outra máquina, editar o endpoint
-	d. `AIMODEL`: Modelo que será utilizado na revisão, sugiro deixar com `codellama` até fazer funcionar
+
+	3.1.  `GITHUB_TOKEN`: Token gerado na sua conta do github, será utilizado para puxar a Diff da PR
+
+	3.2. `API_TOKEN`: Qualquer token, garantirá que somente seu github irá utilizar a sua API
+
+	3.3. `AI_ENGINE_ENDPOINT`: Caso queira rodar o Ollama em outra máquina, editar o endpoint
+
+	3.4. `AIMODEL`: Modelo que será utilizado na revisão, sugiro deixar com `codellama` até fazer funcionar
 4. Importante que o token do github tenha permissão de ler as Pull Requests e comenta-las
 5. Caso de deseje rodar o projeto em ambiente local, será necessário instalar e criar uma conta no ngrok, para que o github consiga acionar o seu ambiente local. (Tempo estimado 5 a 15 minutos - [Doc. Oficial](https://ngrok.com/docs/getting-started/))
-	a. É possível utilizar outro serviço da sua preferência
-	b. Com o ngrok instalado e com o token inserido, abra um terminal e rode `ngrok http 3000`
+	
+    5.1. É possível utilizar outro serviço da sua preferência
+
+	5.2. Com o ngrok instalado e com o token inserido, abra um terminal e rode `ngrok http 3000`
 6. Abra outro terminal, agora vamos subir a API que recebeár a requisição do github: `node webhook-server.js`
 7. Certifique-se de instalar o Ollama na sua máquina (Tempo estimado 5 minutos - [Doc. Oficial](https://ollama.readthedocs.io/en/quickstart/))
 8. Em outro terminal, executar o Ollama com o comando `ollama serve`
@@ -43,8 +49,12 @@
 ## Adicionando o comando /review-ai no seu repositório
 > A API de revisão e o modelo serão chamados sempre que alguém comentar uma Pull Request com `/review-ai`, para isso, vamos às configurações.
 1. No repositório que você deseja adicionar o recurso, vamos precisar criar uma action, que ficará responsável por acionar a API.
-a. Na pasta raíz do seu projeto, crie o arquivo(e o diretório, se necessário) `.github/workflows/ai-review.yml`
-b. Neste arquivo, cole o código abaixo:
+
+    1.1. Na pasta raíz do seu projeto, crie o arquivo(e o diretório, se necessário) `.github/workflows/ai-review.yml`
+
+    1.2. Neste arquivo, cole o código abaixo:
+
+    1.3. Faça commit e garanta que este código seja incorporado na sua branch principal(main e/ou develop)
 ```
 name: Requesting AI review
 
@@ -121,12 +131,12 @@ jobs:
             -H "Authorization: Bearer $API_TOKEN" \
             --data-binary @payload.json
 ```
-  c. Faça commit e garanta que este código seja incorporado na sua branch principal(main e/ou develop)
 
 2. Crie a secret com o endpoint do seu projeto(link gerado pelo ngrok  + rota), e o token que garantirá que somente você vai acessar a sua API
-3. Na tela principal do seu repositório, vá em Settings > Secrets and variables > Actons
+
+3. Na tela principal do seu repositório, vá em Settings > Secrets and variables > Actions
+
 4. Crie as variáveis na secção **Repository secrets**. Criar `API_TOKEN` e `API_URL` e preencher com seu token(igual ao env) e a URL com a rota do ngrok + '/webhook' (para quando acessado, dar na rota da sua API local)
-5. 
 
 # Resultados obtidos:
 
